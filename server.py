@@ -82,6 +82,21 @@ def purchasePlaces():
         error_message = "Not enough places in the competition to meet request 🙂"
         return render_template('error.html', error_message=error_message)
 
+    # Initializes the list of registered clubs
+    if 'registered_clubs' not in competition:
+        competition['registered_clubs'] = {}
+
+    # count the number of places purchased per club
+    if club['name'] not in competition['registered_clubs']:
+        competition['registered_clubs'][club['name']] = 0
+
+    competition['registered_clubs'][club['name']] += placesRequired
+
+    # Limit the number of reservations to 12 places
+    if competition['registered_clubs'][club['name']] > 12:
+        error_message = "You're not allowed to reserve more than 12 places per competition."
+        return render_template('error.html', error_message=error_message)
+
     # Update club and competition points after booking
     club['points'] = club_points - placesRequired
     competition['numberOfPlaces'] = competition_places - placesRequired
@@ -92,8 +107,6 @@ def purchasePlaces():
     save_clubs(clubs)
     save_competitions(competitions)
 
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-    flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
