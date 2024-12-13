@@ -1,0 +1,13 @@
+bin
+include
+lib
+.Python
+tests/
+.envrc
+__pycache__
+venv/
+.idea/
+competitions.json
+clubs.json
+.DS_Store
+__pycache__/
