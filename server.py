@@ -48,8 +48,17 @@ def index():
 
 @app.route('/showSummary', methods=['GET', 'POST'])
 def showSummary():
+    # Retrieve all emails
+    emails = [club['email'] for club in clubs]
+
     if request.method == 'POST':
-        club = [club for club in clubs if club['email'] == request.form['email']][0]
+        email = request.form['email']
+
+        # Check if the email is presente in the JSON database
+        if email not in emails:
+            error_email = "Sorry! This email isn't not found."
+            return render_template('email.html', error_email=error_email)
+        club = [club for club in clubs if club['email'] == email][0]
     else:
         club = clubs[0]
 
