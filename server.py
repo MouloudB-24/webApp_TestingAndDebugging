@@ -45,9 +45,12 @@ clubs = loadClubs()
 def index():
     return render_template('index.html')
 
-@app.route('/showSummary',methods=['POST'])
+@app.route('/showSummary', methods=['GET', 'POST'])
 def showSummary():
-    club = [club for club in clubs if club['email'] == request.form['email']][0]
+    if request.method == 'POST':
+        club = [club for club in clubs if club['email'] == request.form['email']][0]
+    else:
+        club = clubs[0]
     return render_template('welcome.html',club=club,competitions=competitions)
 
 
@@ -69,6 +72,15 @@ def purchasePlaces():
     placesRequired = int(request.form['places'])
     club_points = int(club['points'])
     competition_places = int(competition['numberOfPlaces'])
+
+    # Validate the number of place to purchase
+    if club_points < placesRequired:
+        error_message = "You don't have enough points to purchase the requested places 🙂"
+        return render_template('error.html', error_message=error_message)
+
+    if competition_places < placesRequired:
+        error_message = "Not enough places in the competition to meet request 🙂"
+        return render_template('error.html', error_message=error_message)
 
     # Update club and competition points after booking
     club['points'] = club_points - placesRequired
