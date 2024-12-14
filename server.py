@@ -1,4 +1,6 @@
 import json
+import pdb
+
 from flask import Flask,render_template,request,redirect,flash,url_for
 from datetime import datetime
 
@@ -27,14 +29,18 @@ def save_clubs(clubs):
 
 
 def save_competitions(competitions):
-    try:
-        data = {'competitions': competitions}
+    #try:
+    for competition in competitions:
+        if 'date' in competition and isinstance(competition['date'], datetime):
+            competition['date'] = str(competition['date'])
 
-        with open('competitions.json', 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4)
+    data = {'competitions': competitions}
 
-    except Exception as e:
-        print(f"Error saving competitions: {e}")
+    with open('competitions.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4)
+
+    #except Exception as e:
+    #    print(f"Error saving competitions: {e}")
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
@@ -62,18 +68,21 @@ def showSummary():
     else:
         club = clubs[0]
 
-    today = datetime.now()
     for competition in competitions:
         if isinstance(competition['date'], str):
             competition['date'] = datetime.strptime(competition['date'], "%Y-%m-%d %H:%M:%S")
-
-    return render_template('welcome.html', club=club, competitions=competitions, today=today)
+            if competition['date'] > datetime.now():
+                competition["status"] = "open"
+            else:
+                competition["status"] = "close"
+    return render_template('welcome.html', club=club, competitions=competitions)
 
 
 @app.route('/book/<competition>/<club>')
 def book(competition,club):
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
+
     if foundClub and foundCompetition:
         return render_template('booking.html',club=foundClub,competition=foundCompetition)
     else:
