@@ -71,10 +71,10 @@ def showSummary():
     for competition in competitions:
         if isinstance(competition['date'], str):
             competition['date'] = datetime.strptime(competition['date'], "%Y-%m-%d %H:%M:%S")
-            if competition['date'] > datetime.now():
-                competition["status"] = "open"
-            else:
-                competition["status"] = "close"
+        if competition['date'] > datetime.now():
+            competition["status"] = "open"
+        else:
+            competition["status"] = "close"
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
