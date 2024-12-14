@@ -29,18 +29,18 @@ def save_clubs(clubs):
 
 
 def save_competitions(competitions):
-    #try:
-    for competition in competitions:
-        if 'date' in competition and isinstance(competition['date'], datetime):
-            competition['date'] = str(competition['date'])
+    try:
+        for competition in competitions:
+            if 'date' in competition and isinstance(competition['date'], datetime):
+                competition['date'] = str(competition['date'])
 
-    data = {'competitions': competitions}
+        data = {'competitions': competitions}
 
-    with open('competitions.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4)
+        with open('competitions.json', 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4)
 
-    #except Exception as e:
-    #    print(f"Error saving competitions: {e}")
+    except Exception as e:
+        print(f"Error saving competitions: {e}")
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
