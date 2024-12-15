@@ -74,3 +74,43 @@ def test_showSummary_invalid_date():
                 competition['date'] = datetime.strptime(competition['date'], "%Y-%m-%d %H:%M:%S")
 
 
+def test_purchasePlaces_initialize_registered_club():
+    competition = {'name': 'competition A', 'date': "2020-03-27 10:00:00", 'numberOfPlaces': '13'}
+
+    if 'registered_clubs' not in competition:
+        competition['registered_clubs'] = {}
+
+    assert 'registered_clubs' in competition
+    assert len(competition['registered_clubs']) == 0
+
+def test_purchasePlaces_competition_places_update():
+    competition = {"name": 'competition A', "date": "2020-03-27 10:00:00", 'numberOfPlaces': '13', "registered_clubs": {}}
+    club = {"name": "club A" }
+
+    if club['name'] not in competition['registered_clubs']:
+        competition['registered_clubs'][club['name']] = 0
+
+    placesRequired = 3
+    competition_places = 13
+
+    competition['registered_clubs'][club['name']] += placesRequired
+    competition['numberOfPlaces'] = competition_places - placesRequired
+
+    assert competition['registered_clubs'][club['name']] == 3
+    assert competition['numberOfPlaces'] == 10
+
+
+def test_purchasePlaces_exced_12_places_limit():
+    competition = {"name": 'competition A', "date": "2020-03-27 10:00:00", 'numberOfPlaces': 10,
+                   "registered_clubs": {"club A": 10}}
+    club = {"name": "club A"}
+
+    placesRequired = 5
+    competition['registered_clubs'][club['name']] += placesRequired
+
+    assert competition['registered_clubs'][club['name']] > 12
+
+
+
+
+
