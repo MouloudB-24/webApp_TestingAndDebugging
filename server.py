@@ -107,8 +107,6 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', urandom(24))
 
-#app.secret_key = 'something_special'
-
 competitions = load_competitions()
 clubs = load_clubs()
 
