@@ -1,17 +1,21 @@
 import json
-import pdb
+import logging
 from datetime import datetime
 from pathlib import Path
-import sys
-import logging
-from platform import system
 
 from flask import Flask, render_template, request, redirect, flash, url_for
 
-
+# Configure logging
 logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s: %(message)s')
 
+
+# Load clubs data from JSON
 def load_clubs(file_path='clubs.json'):
+    """
+    Load clubs data from JSON.
+    :param file_path: json name file
+    :return: List of clubs
+    """
     path = Path(file_path)
 
     try:
@@ -32,7 +36,13 @@ def load_clubs(file_path='clubs.json'):
         raise SystemExit()
 
 
+# Load competitions data from JSON
 def load_competitions(file_path='competitions.json'):
+    """
+    Load competitions data from JSON file.
+    :param file_path: json name file
+    :return: List of competitions
+    """
     path = Path(file_path)
 
     try:
@@ -53,7 +63,14 @@ def load_competitions(file_path='competitions.json'):
         raise SystemExit()
 
 
+# Save clubs data to JSON
 def save_clubs(clubs, file_path='clubs.json'):
+    """
+    Save clubs data to JSON
+    :param clubs: List of clubs
+    :param file_path: json file name
+    :return: None or error
+    """
     try:
         data = {'clubs': clubs}
 
@@ -64,7 +81,14 @@ def save_clubs(clubs, file_path='clubs.json'):
         print(f"Error saving clubs: {e}")
 
 
+# Save competitions data to JSON
 def save_competitions(competitions, file_path='competitions.json'):
+    """
+    Save competitions data to JSON
+    :param competitions: List of competitions
+    :param file_path: json file name
+    :return: None or error
+    """
     try:
         data = {'competitions': competitions}
 
@@ -80,12 +104,19 @@ app.secret_key = 'something_special'
 competitions = load_competitions()
 clubs = load_clubs()
 
+
+# Route to login page
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
 def assign_competition_status(competitions):
+    """
+    Assign an open or close status to the competitions according to its date.
+    :param competitions: List of competitions
+    :return: List of competitions with close or open status
+    """
     for competition in competitions:
         if datetime.strptime(competition['date'], "%Y-%m-%d %H:%M:%S") > datetime.now():
             competition["status"] = "open"
@@ -94,14 +125,23 @@ def assign_competition_status(competitions):
     return competitions
 
 def is_email_invalid(email):
+    """
+    Check that an email is not present in the json database.
+    :param email: email
+    :return: error message
+    """
     # Retrieve all emails
     emails = [club['email'] for club in clubs] if clubs else []
     if email not in emails:
         raise BookingError("Sorry! This email isn't not found.")
 
 
+# Route to menu page
 @app.route('/showSummary', methods=['GET', 'POST'])
 def show_summary():
+    """
+    Displays app menu.
+    """
     try:
 
         if request.method == 'POST':
@@ -119,8 +159,15 @@ def show_summary():
         return render_template('email.html', error_message=e)
 
 
+# Route to the booking page
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
+    """
+    Displays the booking page for a specific competition and club
+    :param competition:The competition selected by user
+    :param club: The club selected by user
+    :return: 'booking.html' template with th competition and club details
+    """
     found_club = [c for c in clubs if c['name'] == club][0]
     found_competition = [c for c in competitions if c['name'] == competition][0]
 
@@ -132,9 +179,13 @@ def book(competition, club):
 
 
 class BookingError(Exception):
+    """
+    Custom exception class for booking related errors.
+    """
     pass
 
 
+# Implements booking process
 def process_booking(competition, club, places_required):
     """
     Processes the logic booking for competitions places.
@@ -179,8 +230,13 @@ def process_booking(competition, club, places_required):
         raise BookingError('The number format provided is invalid 😡')
 
 
+#
 @app.route('/purchasePlaces', methods=['POST'])
 def purchase_places():
+    """
+    Convert points into places and update JSON files.
+    :return: Confirmation message or booking error
+    """
     try:
         # Find competition and club
         competition = next(c for c in competitions if c['name'] == request.form['competition'])
