@@ -1,7 +1,10 @@
 import json
 import logging
 from datetime import datetime
+from os import urandom
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 from flask import Flask, render_template, request, redirect, flash, url_for
 
@@ -98,8 +101,13 @@ def save_competitions(competitions, file_path='competitions.json'):
     except Exception as e:
         print(f"Error saving competitions: {e}")
 
+# Load variables from .env
+load_dotenv()
+
 app = Flask(__name__)
-app.secret_key = 'something_special'
+app.secret_key = os.getenv('SECRET_KEY', urandom(24))
+
+#app.secret_key = 'something_special'
 
 competitions = load_competitions()
 clubs = load_clubs()
