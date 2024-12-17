@@ -1,17 +1,56 @@
 import json
+import pdb
 from datetime import datetime
+from pathlib import Path
+import sys
+import logging
+from platform import system
 
 from flask import Flask, render_template, request, redirect, flash, url_for
 
 
+logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s: %(message)s')
+
 def load_clubs(file_path='clubs.json'):
-    with open(file_path, 'r') as c:
-         return json.load(c)['clubs']
+    path = Path(file_path)
+
+    try:
+        if not path.exists():
+            path.write_text(json.dumps({'clubs': []}, indent=4), encoding='utf-8')
+
+        with open(file_path, 'r') as c:
+             return json.load(c)['clubs']
+
+    except json.JSONDecodeError:
+        logging.error(f"The {file_path} is corrupted!")
+        raise SystemExit()
+    except PermissionError:
+        logging.error(f"You do not have access to file {file_path}")
+        raise SystemExit()
+    except Exception as e:
+        logging.error(f"An unexpected error is occurred: {e}")
+        raise SystemExit()
 
 
 def load_competitions(file_path='competitions.json'):
-    with open(file_path, 'r') as comps:
-         return json.load(comps)['competitions']
+    path = Path(file_path)
+
+    try:
+        if not path.exists():
+            path.write_text(json.dumps({'competitions': []}, indent=4), encoding='utf-8')
+
+        with open(file_path, 'r') as comps:
+             return json.load(comps)['competitions']
+
+    except json.JSONDecodeError:
+        logging.error(f"Error: The {file_path} is corrupted!")
+        raise SystemExit()
+    except PermissionError:
+        logging.error(f"You do not have access to file {file_path}")
+        raise SystemExit()
+    except Exception as e:
+        logging.error(f"An unexpected error is occurred: {e}")
+        raise SystemExit()
 
 
 def save_clubs(clubs, file_path='clubs.json'):
@@ -56,9 +95,10 @@ def assign_competition_status(competitions):
 
 def is_email_invalid(email):
     # Retrieve all emails
-    emails = [club['email'] for club in clubs]
+    emails = [club['email'] for club in clubs] if clubs else []
     if email not in emails:
         raise BookingError("Sorry! This email isn't not found.")
+
 
 @app.route('/showSummary', methods=['GET', 'POST'])
 def show_summary():
@@ -76,7 +116,7 @@ def show_summary():
         return render_template('welcome.html', club=club, competitions=competitions)
 
     except BookingError as e:
-        return render_template('error.html', error_message=e)
+        return render_template('email.html', error_message=e)
 
 
 @app.route('/book/<competition>/<club>')

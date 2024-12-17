@@ -14,3 +14,4 @@ test_clubs.json
 test_competitions.json
 htmlcov/
 .coverage
+error.log
