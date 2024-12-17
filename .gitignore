@@ -10,3 +10,7 @@ competitions.json
 clubs.json
 .DS_Store
 __pycache__/
+test_clubs.json
+test_competitions.json
+htmlcov/
+.coverage

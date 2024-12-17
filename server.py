@@ -1,42 +1,35 @@
 import json
-import pdb
-
-from flask import Flask,render_template,request,redirect,flash,url_for
 from datetime import datetime
 
-
-def loadClubs():
-    with open('clubs.json') as c:
-         listOfClubs = json.load(c)['clubs']
-         return listOfClubs
+from flask import Flask, render_template, request, redirect, flash, url_for
 
 
-def loadCompetitions():
-    with open('competitions.json') as comps:
-         listOfCompetitions = json.load(comps)['competitions']
-         return listOfCompetitions
+def load_clubs(file_path='clubs.json'):
+    with open(file_path, 'r') as c:
+         return json.load(c)['clubs']
 
 
-def save_clubs(clubs):
+def load_competitions(file_path='competitions.json'):
+    with open(file_path, 'r') as comps:
+         return json.load(comps)['competitions']
+
+
+def save_clubs(clubs, file_path='clubs.json'):
     try:
         data = {'clubs': clubs}
 
-        with open('clubs.json', 'w', encoding='utf-8') as f:
+        with open(file_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
 
     except Exception as e:
         print(f"Error saving clubs: {e}")
 
 
-def save_competitions(competitions):
+def save_competitions(competitions, file_path='competitions.json'):
     try:
-        for competition in competitions:
-            if 'date' in competition and isinstance(competition['date'], datetime):
-                competition['date'] = str(competition['date'])
-
         data = {'competitions': competitions}
 
-        with open('competitions.json', 'w', encoding='utf-8') as f:
+        with open(file_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
 
     except Exception as e:
@@ -45,94 +38,127 @@ def save_competitions(competitions):
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
-competitions = loadCompetitions()
-clubs = loadClubs()
+competitions = load_competitions()
+clubs = load_clubs()
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/showSummary', methods=['GET', 'POST'])
-def showSummary():
-    # Retrieve all emails
-    emails = [club['email'] for club in clubs]
 
-    if request.method == 'POST':
-        email = request.form['email']
-
-        # Check if the email is presente in the JSON database
-        if email not in emails:
-            error_email = "Sorry! This email isn't not found."
-            return render_template('email.html', error_email=error_email)
-        club = [club for club in clubs if club['email'] == email][0]
-    else:
-        club = clubs[0]
-
+def assign_competition_status(competitions):
     for competition in competitions:
-        if isinstance(competition['date'], str):
-            competition['date'] = datetime.strptime(competition['date'], "%Y-%m-%d %H:%M:%S")
-        if competition['date'] > datetime.now():
+        if datetime.strptime(competition['date'], "%Y-%m-%d %H:%M:%S") > datetime.now():
             competition["status"] = "open"
         else:
             competition["status"] = "close"
-    return render_template('welcome.html', club=club, competitions=competitions)
+    return competitions
+
+def is_email_invalid(email):
+    # Retrieve all emails
+    emails = [club['email'] for club in clubs]
+    if email not in emails:
+        raise BookingError("Sorry! This email isn't not found.")
+
+@app.route('/showSummary', methods=['GET', 'POST'])
+def show_summary():
+    try:
+
+        if request.method == 'POST':
+            # Check if the email is presente in the JSON database
+            email = request.form['email']
+            is_email_invalid(email)
+
+            club = [club for club in clubs if club['email'] == email][0]
+        else:
+            club = clubs[0]
+        assign_competition_status(competitions)
+        return render_template('welcome.html', club=club, competitions=competitions)
+
+    except BookingError as e:
+        return render_template('error.html', error_message=e)
 
 
 @app.route('/book/<competition>/<club>')
-def book(competition,club):
-    foundClub = [c for c in clubs if c['name'] == club][0]
-    foundCompetition = [c for c in competitions if c['name'] == competition][0]
+def book(competition, club):
+    found_club = [c for c in clubs if c['name'] == club][0]
+    found_competition = [c for c in competitions if c['name'] == competition][0]
 
-    if foundClub and foundCompetition:
-        return render_template('booking.html',club=foundClub,competition=foundCompetition)
+    if found_club and found_competition:
+        return render_template('booking.html', club=found_club, competition=found_competition)
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
 
 
-@app.route('/purchasePlaces',methods=['POST'])
-def purchasePlaces():
-    competition = [c for c in competitions if c['name'] == request.form['competition']][0]
-    club = [c for c in clubs if c['name'] == request.form['club']][0]
-    placesRequired = int(request.form['places'])
-    club_points = int(club['points'])
-    competition_places = int(competition['numberOfPlaces'])
+class BookingError(Exception):
+    pass
 
-    # Validate the number of place to purchase
-    if club_points < placesRequired:
-        error_message = "You don't have enough points to purchase the requested places 🙂"
-        return render_template('error.html', error_message=error_message)
 
-    if competition_places < placesRequired:
-        error_message = "Not enough places in the competition to meet request 🙂"
-        return render_template('error.html', error_message=error_message)
+def process_booking(competition, club, places_required):
+    """
+    Processes the logic booking for competitions places.
+    :param competition: The competition selected by the user.
+    :param club: The club requesting the booking.
+    :return: updated_club, updated_competition OR raises booking_error
+    """
+    try:
+        places_required = int(places_required)
+        club_points = int(club['points'])
+        competition_places = int(competition['numberOfPlaces'])
 
-    # Initializes the list of registered clubs
-    if 'registered_clubs' not in competition:
-        competition['registered_clubs'] = {}
+        # Validate the number of place to purchase
+        if places_required <= 0:
+            raise BookingError("Invalid number of places requested 😡")
 
-    # count the number of places purchased per club
-    if club['name'] not in competition['registered_clubs']:
-        competition['registered_clubs'][club['name']] = 0
+        if club_points < places_required:
+            raise BookingError("You don't have enough points to purchase the requested places 🙂")
+        if competition_places < places_required:
+            raise BookingError("Not enough places in the competition to meet request 🙂")
 
-    competition['registered_clubs'][club['name']] += placesRequired
+        # Initializes the list of registered clubs
+        if 'registered_clubs' not in competition:
+            competition['registered_clubs'] = {}
 
-    # Limit the number of reservations to 12 places
-    if competition['registered_clubs'][club['name']] > 12:
-        error_message = "You're not allowed to reserve more than 12 places per competition."
-        return render_template('error.html', error_message=error_message)
+        # Count the number of places purchased per club And limit the number of reservations to 12 places
+        if club['name'] not in competition['registered_clubs']:
+            competition['registered_clubs'][club['name']] = 0
+        count = competition['registered_clubs'][club['name']] + places_required
+        if count  > 12:
+            raise BookingError(f"Max 12 places per competition 🙂. "
+                               f"You have {12-(competition['registered_clubs'][club['name']])} places left.")
+        competition['registered_clubs'][club['name']] = count
 
-    # Update club and competition points after booking
-    club['points'] = club_points - placesRequired
-    competition['numberOfPlaces'] = competition_places - placesRequired
+        # Update club and competition points after booking
+        club['points'] = club_points - places_required
+        competition['numberOfPlaces'] = competition_places - places_required
 
-    flash(f'Great 👍! You have booked {placesRequired} places.')
+        return competition, club
 
-    # Update data in JSON
-    save_clubs(clubs)
-    save_competitions(competitions)
+    except ValueError:
+        raise BookingError('The number format provided is invalid 😡')
 
-    return render_template('welcome.html', club=club, competitions=competitions)
+
+@app.route('/purchasePlaces', methods=['POST'])
+def purchase_places():
+    try:
+        # Find competition and club
+        competition = next(c for c in competitions if c['name'] == request.form['competition'])
+        club = next(c for c in clubs if c['name'] == request.form['club'])
+
+        # Start booking
+        competition, club = process_booking(competition, club, request.form['places'])
+
+        # Update data in JSON
+        save_clubs(clubs)
+        save_competitions(competitions)
+
+        # Display the booking confirmation message
+        flash(f"Great 👍! You have booked {request.form['places']} places.")
+        return render_template('welcome.html', club=club, competitions=competitions)
+
+    except BookingError as e:
+        return render_template('error.html', error_message=e)
 
 
 # TODO: Add route for points display
