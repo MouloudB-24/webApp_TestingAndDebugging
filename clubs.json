@@ -1,0 +1,54 @@
+{
+    "clubs": [
+        {
+            "name": "Simply Lift",
+            "email": "john@simplylift.co",
+            "points": "19"
+        },
+        {
+            "name": "Iron Temple",
+            "email": "admin@irontemple.com",
+            "points": "10"
+        },
+        {
+            "name": "She Lifts",
+            "email": "kate@shelifts.co.uk",
+            "points": "12"
+        },
+        {
+            "name": "Power House",
+            "email": "contact@powerhouse.com",
+            "points": "15"
+        },
+        {
+            "name": "Fitness First",
+            "email": "info@fitnessfirst.com",
+            "points": "5"
+        },
+        {
+            "name": "Gladiator Gym",
+            "email": "support@gladiatorgym.com",
+            "points": "20"
+        },
+        {
+            "name": "Victory Fitness",
+            "email": "hello@victoryfitness.org",
+            "points": "11"
+        },
+        {
+            "name": "Max Strength",
+            "email": "info@maxstrength.com",
+            "points": "9"
+        },
+        {
+            "name": "Lift Legends",
+            "email": "team@liftlegends.net",
+            "points": "13"
+        },
+        {
+            "name": "Ultimate Gym",
+            "email": "contact@ultimategym.com",
+            "points": "16"
+        }
+    ]
+}

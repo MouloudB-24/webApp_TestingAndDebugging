@@ -6,8 +6,6 @@ lib
 __pycache__
 venv/
 .idea/
-competitions.json
-clubs.json
 .DS_Store
 __pycache__/
 test_clubs.json

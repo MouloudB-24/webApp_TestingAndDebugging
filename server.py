@@ -1,5 +1,6 @@
 import json
 import logging
+import pdb
 from datetime import datetime
 from os import urandom
 from pathlib import Path
@@ -114,7 +115,7 @@ clubs = load_clubs()
 # Route to login page
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', clubs=clubs)
 
 
 def assign_competition_status(competitions):
@@ -224,11 +225,11 @@ def process_booking(competition, club, places_required):
         if count  > 12:
             raise BookingError(f"Max 12 places per competition 🙂. "
                                f"You have {12-(competition['registered_clubs'][club['name']])} places left.")
-        competition['registered_clubs'][club['name']] = count
+        competition['registered_clubs'][club['name']] = str(count)
 
         # Update club and competition points after booking
-        club['points'] = club_points - places_required
-        competition['numberOfPlaces'] = competition_places - places_required
+        club['points'] = str(club_points - places_required)
+        competition['numberOfPlaces'] = str(competition_places - places_required)
 
         return competition, club
 
@@ -264,8 +265,6 @@ def purchase_places():
 
 
 # TODO: Add route for points display
-
-
 @app.route('/logout')
 def logout():
     return redirect(url_for('index'))
