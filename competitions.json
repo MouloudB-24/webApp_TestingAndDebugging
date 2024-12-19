@@ -3,127 +3,60 @@
         {
             "name": "Spring Festival",
             "date": "2026-03-27 10:00:00",
-            "numberOfPlaces": "13"
+            "numberOfPlaces": "28",
+            "status": "open",
+            "registered_clubs": {
+                "Simply Lift": "12",
+                "Gladiator Gym": "12",
+                "Simply Lift 2": "12",
+                "Gladiator Gym 2": "12"
+            }
         },
         {
             "name": "Fall Classic",
-            "date": "2020-10-22 13:30:00",
-            "numberOfPlaces": "13",
-            "status": "close"
+            "date": "2025-10-22 13:30:00",
+            "numberOfPlaces": "100",
+            "status": "open"
         },
         {
             "name": "Fall Classic 2",
             "date": "2026-10-26 13:30:00",
-            "numberOfPlaces": "0",
-            "status": "open"
+            "numberOfPlaces": "64",
+            "status": "open",
+            "registered_clubs": {
+                "Iron Temple": "12",
+                "Iron Temple 2": "12"
+            }
         },
         {
             "name": "Spring Festival 2",
             "date": "2027-03-27 10:00:00",
-            "numberOfPlaces": "30",
+            "numberOfPlaces": "64",
             "status": "open",
             "registered_clubs": {
-                "Simply Lift": "7"
+                "She Lifts": "12",
+                "She Lifts 2": "12"
             }
         },
         {
             "name": "Summer Challenge",
             "date": "2025-06-15 09:00:00",
-            "numberOfPlaces": "19",
+            "numberOfPlaces": "64",
             "status": "open",
             "registered_clubs": {
-                "Lift Legends": 1
+                "Power House": "12",
+                "Power House 2": "12"
             }
         },
         {
             "name": "Winter Championship",
             "date": "2029-12-10 17:00:00",
-            "numberOfPlaces": "17",
-            "status": "open"
-        },
-        {
-            "name": "City Marathon",
-            "date": "2026-08-20 08:00:00",
-            "numberOfPlaces": "30",
-            "status": "open"
-        },
-        {
-            "name": "Autumn Invitational",
-            "date": "2022-11-01 12:00:00",
-            "numberOfPlaces": "18",
-            "status": "close"
-        },
-        {
-            "name": "New Year Cup",
-            "date": "2025-01-01 10:00:00",
-            "numberOfPlaces": "25",
-            "status": "open"
-        },
-        {
-            "name": "Mid-Summer Derby",
-            "date": "2025-07-15 15:00:00",
-            "numberOfPlaces": "0",
-            "status": "open"
-        },
-        {
-            "name": "Golden Trophy",
-            "date": "2025-05-10 14:00:00",
-            "numberOfPlaces": "12",
-            "status": "open"
-        },
-        {
-            "name": "Open Championship",
-            "date": "2026-09-20 10:30:00",
-            "numberOfPlaces": "10",
-            "status": "open"
-        },
-        {
-            "name": "Winter Challenge",
-            "date": "2025-12-01 18:00:00",
-            "numberOfPlaces": "15",
-            "status": "open"
-        },
-        {
-            "name": "Champions League",
-            "date": "2026-06-30 20:00:00",
-            "numberOfPlaces": "22",
-            "status": "open"
-        },
-        {
-            "name": "Snowball Cup",
-            "date": "2026-01-15 09:30:00",
-            "numberOfPlaces": "7",
-            "status": "open"
-        },
-        {
-            "name": "International Meetup",
-            "date": "2026-03-20 11:00:00",
-            "numberOfPlaces": "8",
-            "status": "open"
-        },
-        {
-            "name": "Global Challenge",
-            "date": "2027-09-25 19:00:00",
-            "numberOfPlaces": "50",
-            "status": "open"
-        },
-        {
-            "name": "Spring Games",
-            "date": "2026-04-10 16:00:00",
-            "numberOfPlaces": "11",
-            "status": "open"
-        },
-        {
-            "name": "Summer Open",
-            "date": "2025-08-15 14:30:00",
-            "numberOfPlaces": "6",
-            "status": "open"
-        },
-        {
-            "name": "Holiday Cup",
-            "date": "2025-12-25 09:00:00",
-            "numberOfPlaces": "20",
-            "status": "open"
+            "numberOfPlaces": "64",
+            "status": "open",
+            "registered_clubs": {
+                "Fitness First": "12",
+                "Fitness First 2": "12"
+            }
         }
     ]
 }

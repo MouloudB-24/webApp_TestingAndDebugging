@@ -221,10 +221,10 @@ def process_booking(competition, club, places_required):
         # Count the number of places purchased per club And limit the number of reservations to 12 places
         if club['name'] not in competition['registered_clubs']:
             competition['registered_clubs'][club['name']] = 0
-        count = competition['registered_clubs'][club['name']] + places_required
+        count = int(competition['registered_clubs'][club['name']]) + places_required
         if count  > 12:
             raise BookingError(f"Max 12 places per competition 🙂. "
-                               f"You have {12-(competition['registered_clubs'][club['name']])} places left.")
+                               f"You have {12-int((competition['registered_clubs'][club['name']]))} places left.")
         competition['registered_clubs'][club['name']] = str(count)
 
         # Update club and competition points after booking

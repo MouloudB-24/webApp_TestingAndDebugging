@@ -14,3 +14,5 @@ htmlcov/
 .coverage
 error.log
 .env
+competitions.json
+clubs.json
