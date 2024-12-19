@@ -3,22 +3,22 @@
         {
             "name": "Simply Lift",
             "email": "john@simplylift.co",
-            "points": "8"
+            "points": "20"
         },
         {
             "name": "Iron Temple",
             "email": "admin@irontemple.com",
-            "points": "8"
+            "points": "20"
         },
         {
             "name": "She Lifts",
             "email": "kate@shelifts.co.uk",
-            "points": "8"
+            "points": "20"
         },
         {
             "name": "Power House",
             "email": "contact@powerhouse.com",
-            "points": "8"
+            "points": "20"
         },
         {
             "name": "Fitness First",
@@ -28,7 +28,7 @@
         {
             "name": "Gladiator Gym",
             "email": "support@gladiatorgym.com",
-            "points": "8"
+            "points": "20"
         }
     ]
 }

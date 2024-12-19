@@ -4,13 +4,7 @@
             "name": "Spring Festival",
             "date": "2026-03-27 10:00:00",
             "numberOfPlaces": "28",
-            "status": "open",
-            "registered_clubs": {
-                "Simply Lift": "12",
-                "Gladiator Gym": "12",
-                "Simply Lift 2": "12",
-                "Gladiator Gym 2": "12"
-            }
+            "status": "open"
         },
         {
             "name": "Fall Classic",
@@ -22,41 +16,23 @@
             "name": "Fall Classic 2",
             "date": "2026-10-26 13:30:00",
             "numberOfPlaces": "64",
-            "status": "open",
-            "registered_clubs": {
-                "Iron Temple": "12",
-                "Iron Temple 2": "12"
-            }
+            "status": "open"
         },
         {
             "name": "Spring Festival 2",
             "date": "2027-03-27 10:00:00",
-            "numberOfPlaces": "64",
-            "status": "open",
-            "registered_clubs": {
-                "She Lifts": "12",
-                "She Lifts 2": "12"
-            }
+            "numberOfPlaces": "64"
         },
         {
             "name": "Summer Challenge",
             "date": "2025-06-15 09:00:00",
             "numberOfPlaces": "64",
-            "status": "open",
-            "registered_clubs": {
-                "Power House": "12",
-                "Power House 2": "12"
-            }
+            "status": "open"
         },
         {
             "name": "Winter Championship",
             "date": "2029-12-10 17:00:00",
-            "numberOfPlaces": "64",
-            "status": "open",
-            "registered_clubs": {
-                "Fitness First": "12",
-                "Fitness First 2": "12"
-            }
+            "numberOfPlaces": "64"
         }
     ]
 }
