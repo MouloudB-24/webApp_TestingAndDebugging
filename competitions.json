@@ -3,10 +3,11 @@
         {
             "name": "Test Competition",
             "date": "2030-12-31 23:59:59",
-            "numberOfPlaces": "20",
+            "numberOfPlaces": "17",
             "status": "open",
             "registered_clubs": {
-                "Test Club": "5"
+                "Test Club": "5",
+                "Simply Lift": "3"
             }
         }
     ]
