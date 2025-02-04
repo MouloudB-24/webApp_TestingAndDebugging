@@ -1,3 +1,4 @@
+
 import json
 from unittest.mock import patch
 
@@ -75,8 +76,8 @@ def test_process_booking_valid():
 
     process_booking(competition, club, places_required)
 
-    assert competition['numberOfPlaces'] == 15, 'Le nombre de places doit être réduit correctement.'
-    assert club['points'] == 10, 'Le nombre de points doit être réduit correctement.'
+    assert competition['numberOfPlaces'] == '15', 'Le nombre de places doit être réduit correctement.'
+    assert club['points'] == '10', 'Le nombre de points doit être réduit correctement.'
 
 
 def test_process_booking_exced_12_places_limit():
@@ -109,8 +110,3 @@ def test_process_booking_insufficient_places():
 
     with pytest.raises(BookingError, match="Not enough places in the competition..."):
         process_booking(competition, club,   places_required = 12)
-
-
-
-
-

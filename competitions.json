@@ -1,38 +1,13 @@
 {
     "competitions": [
         {
-            "name": "Spring Festival",
-            "date": "2026-03-27 10:00:00",
-            "numberOfPlaces": "28",
-            "status": "open"
-        },
-        {
-            "name": "Fall Classic",
-            "date": "2025-10-22 13:30:00",
-            "numberOfPlaces": "100",
-            "status": "open"
-        },
-        {
-            "name": "Fall Classic 2",
-            "date": "2026-10-26 13:30:00",
-            "numberOfPlaces": "64",
-            "status": "open"
-        },
-        {
-            "name": "Spring Festival 2",
-            "date": "2027-03-27 10:00:00",
-            "numberOfPlaces": "64"
-        },
-        {
-            "name": "Summer Challenge",
-            "date": "2025-06-15 09:00:00",
-            "numberOfPlaces": "64",
-            "status": "open"
-        },
-        {
-            "name": "Winter Championship",
-            "date": "2029-12-10 17:00:00",
-            "numberOfPlaces": "64"
+            "name": "Test Competition",
+            "date": "2030-12-31 23:59:59",
+            "numberOfPlaces": "20",
+            "status": "open",
+            "registered_clubs": {
+                "Test Club": "5"
+            }
         }
     ]
 }

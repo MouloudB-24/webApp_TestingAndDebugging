@@ -1,34 +1,18 @@
 {
-    "clubs": [
+    "clubs":[
         {
-            "name": "Simply Lift",
-            "email": "john@simplylift.co",
-            "points": "20"
+            "name":"Simply Lift",
+            "email":"john@simplylift.co",
+            "points":"13"
         },
         {
-            "name": "Iron Temple",
+            "name":"Iron Temple",
             "email": "admin@irontemple.com",
-            "points": "20"
+            "points":"4"
         },
-        {
-            "name": "She Lifts",
+        {   "name":"She Lifts",
             "email": "kate@shelifts.co.uk",
-            "points": "20"
-        },
-        {
-            "name": "Power House",
-            "email": "contact@powerhouse.com",
-            "points": "20"
-        },
-        {
-            "name": "Fitness First",
-            "email": "info@fitnessfirst.com",
-            "points": "8"
-        },
-        {
-            "name": "Gladiator Gym",
-            "email": "support@gladiatorgym.com",
-            "points": "20"
+            "points":"12"
         }
     ]
 }

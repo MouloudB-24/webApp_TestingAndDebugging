@@ -1,12 +1,11 @@
 import json
 import logging
-import pdb
+import os
 from datetime import datetime
 from os import urandom
 from pathlib import Path
-import os
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, flash, url_for
 
 # Configure logging
